@@ -24,15 +24,23 @@
                 android:layout_height="wrap_content"
                 android:autofillHints="Введите значение"
                 android:ems="10"
-                android:inputType="number"
+                android:inputType="number|numberDecimal"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvstatic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="RUB  -->"
+                app:layout_constraintStart_toEndOf="@+id/etfInput"
+                tools:layout_editor_absoluteY="11dp" />
 
             <Spinner
                 android:id="@+id/spinnerCurr"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toEndOf="@+id/etfInput"
+                app:layout_constraintStart_toEndOf="@+id/tvstatic"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView

@@ -4,8 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -85,6 +90,47 @@ public class MainActivity extends AppCompatActivity {
 
             }
             addSpinner(charCodes);
+            EditText inputCurr = (EditText) findViewById(R.id.etfInput);
+
+            inputCurr.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    if(charSequence.length() != 0) {
+                        TextView result = (TextView) findViewById(R.id.tvResult);
+                        Spinner sp = (Spinner) findViewById(R.id.spinnerCurr);
+                        String selectedItem = sp.getSelectedItem().toString();
+                        Valute selectedValute = null;
+                        for (Valute v: valuteList){
+                            if (v.getCharCode() == selectedItem){
+                                selectedValute = v;
+                                break;
+                            }
+                        }
+                        if(selectedValute != null){
+                            int nominal = selectedValute.getNominal();
+                            double value = selectedValute.getValue();
+                            double rub = Double.parseDouble(charSequence.toString());
+                            Double resultD = rub * nominal / value ;
+                            String resultSting = String.format("%.4g%n", resultD);
+                            result.setText(resultSting);
+                        }
+                    } else{
+                        TextView viewById = (TextView) findViewById(R.id.tvResult);
+                        viewById.setText("");
+                    }
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+
+                }
+            });
+
 
         }
     }
@@ -94,6 +140,7 @@ public class MainActivity extends AppCompatActivity {
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, charCodes);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         s.setAdapter(arrayAdapter);
+
     }
 
     public void addRow(Valute currency) {
