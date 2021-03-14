@@ -27,8 +27,6 @@ import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
-    private static List<Valute> valutes = new ArrayList<>();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +45,21 @@ public class MainActivity extends AppCompatActivity {
         tv.setText("Значение");
         tableLayout.addView(tr);
         new AsyncRequest().execute();
+        Spinner spinner = (Spinner) findViewById(R.id.spinnerCurr);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                TextView tv = (TextView) findViewById(R.id.tvResult);
+                tv.setText("");
+                EditText et = (EditText) findViewById(R.id.etfInput);
+                et.setText("");
+            }
 
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
 
+            }
+        });
     }
 
     public class AsyncRequest extends AsyncTask<String,Integer,String>{
@@ -116,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
                             double value = selectedValute.getValue();
                             double rub = Double.parseDouble(charSequence.toString());
                             Double resultD = rub * nominal / value ;
-                            String resultSting = String.format("%.4g%n", resultD);
+                            String resultSting = String.format("%5.4g", resultD);
                             result.setText(resultSting);
                         }
                     } else{
